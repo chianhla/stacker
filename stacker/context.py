@@ -57,9 +57,20 @@ class Context(object):
 
     @property
     def namespace(self):
-        return self.config.get(
-                "namespace",
-                self.environment.get("namespace", ""))
+        namespace = self.config.get("namespace")
+        if namespace is not None:
+            return namespace
+
+        # For backwards compatibility, we fallback to attempting to
+        # fetch the namespace from the environment file, if provided.
+        namespace = self.environment.get("namespace")
+        if namespace:
+            logger.warn("specifying namespace in the environment is "
+                        "deprecated, and should be moved to the config")
+            return namespace
+
+        # No namespace
+        return ""
 
     @property
     def namespace_delimiter(self):

@@ -52,6 +52,11 @@ class TestContext(unittest.TestCase):
         fqn = context.get_fqn()
         self.assertEqual(fqn, "my-namespace")
 
+    def test_context_get_fqn_no_namespace(self):
+        context = Context(environment={})
+        fqn = context.get_fqn("vpc")
+        self.assertEqual(fqn, "vpc")
+
     def test_context_get_fqn_stack_name(self):
         context = Context(self.environment)
         fqn = context.get_fqn("stack1")
